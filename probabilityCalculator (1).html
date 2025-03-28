@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Probability Calculator</title>
+    <style>
+        body{
+            text-align: center;
+            font-family: "Consolas";
+            background-color: #BFDAF3;
+        }
+        #title{
+            font-size: 5em;
+        }
+        a{
+            text-decoration: none;
+            color:black;
+
+        }
+        a:hover{
+            color:white;
+        }
+        #menuBar{
+            display:grid;
+            grid-auto-flow: column;
+        }
+        .myButton:hover{
+            color:white;
+            background-color: #BFDAF3;
+        }
+        .myButton{
+            padding:5px;
+            margin:55px;
+            border-radius: 4px;
+            background-color:#a8c1d8; 
+        }
+		table { 
+            align-self: center;
+            text-align: center;
+            align-items: center;
+			margin: 0 auto;
+			border-collapse: collapse;
+		}
+		td, th {
+			padding: 10px;
+			border: 1px solid black;
+			text-align: center;
+		}
+        label{
+            background-color: white; 
+            padding: 1px; 
+            border-radius: 5px;
+        }
+		
+		
+    </style>
+</head>
+<body>
+    <script>
+    function factorial(n) {
+        if (n === 0 || n === 1) return 1;
+        let result = 1;
+        for (let i = 2; i <= n; i++) {
+            result *= i;
+        }
+        return result;
+    }
+    
+    function countArrangements() {
+        let word = document.getElementById("wordInput").value.trim();
+        let resultDiv = document.getElementById("result");
+    
+        if (word.length === 0) {
+            resultDiv.innerHTML = "<h3 style=' border-radius: 10px; display: inline-block; padding: 10px; background-color: red; color: white;'>Please enter a word.</h3>";
+            return;
+        }
+    
+        let letterCounts = {};
+        for (let char of word) {
+            letterCounts[char] = (letterCounts[char] || 0) + 1;
+        }
+    
+        let numerator = factorial(word.length);
+        let denominator = 1;
+    
+        for (let key in letterCounts) {
+            denominator *= factorial(letterCounts[key]);
+        }
+    
+        let arrangements = numerator / denominator;
+        resultDiv.innerHTML = `<h2 style='background-color: white; padding: 10px; border-radius: 10px; text-align: center;'>The word "<span style="color: blue;">${word}</span>" can be arranged in <span style="color: green;">${arrangements}</span> unique ways.</h2>`;
+    }
+    
+    
+        document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("wordButton").addEventListener("click", countArrangements);
+    });
+    
+    
+    </script>
+
+    <h1 id="title">Probability <br>Calculator</h1>
+    <p style = "font-size: 10px;"><a href = "https://github.com/stephenoconnor17" target="_blank">By Stephen O'Connor</a> & <a href="https://github.com/JackDuff05" target="_blank">Jack Duff</a></p>
+    <p>This is a calculator that will calculate probability.</p>
+
+    <div id = "menuBar">
+    <h3 class="myButton" onclick="showQuestion('question1')">Q1: UNIQUE ARRANGMENTS OF A WORD</h3>
+    <h3 class="myButton" onclick="showQuestion('question2')">Q2: SIMPLE PROBABILITY</h3>
+    <h3 class="myButton" onclick="showQuestion('question3')">Q3: 2-Way Frequency Table</h3>
+    <h3 class="myButton" onclick="showQuestion('question4')">Q4: Binomial Probability</h3>
+    </div>
+
+    <div id = "question1" class = "question" style="display:none;">
+        <h1>Enter the word: <input id="wordInput"></h1>
+        <h4 id="wordButton" class="myButton">calculate</h4>
+        <div id ="result"></div>
+    </div>
+	
+	
+
+    <div id = "question2" class = "question" style="display:none;">
+        <label for="numerator" >Favorable Outcomes:</label>
+        <input type="number" id="numerator" name="numerator"><br>
+        <label for="denominator" >Total Outcomes:</label>
+        <input type="number" id="denominator" name="denominator"><br>
+        <button  id="calculateProbability" style="margin: 10px; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Calculate Probability</button>
+		
+        <button style="cursor: pointer; margin: 10px; padding: 5px 10px; border-radius: 5px;" id="Q2Button" onclick="showQuestion('question2')">Show Question 2</button>
+
+        <form id="outputFormat">
+            <label>
+                <input type="radio" name="format" value="decimal"> Decimal
+            </label>
+            <label>
+                <input type="radio" name="format" value="percentage"> Percentage
+            </label>
+        </form>
+        <div id ="resultq2"></div>
+    </div>
+	
+    <div id = "question3" class = "question" style="display:none;">
+        <h4>Fill in the values of the table</h4>
+        <table>
+            <tr>
+                <th></th>
+                <th><input id="tableHeadingOne"></th>
+                <th><input id="tableHeadingTwo"></th>
+            </tr>
+            <tr>
+                <th><input id="tableHeadingThree"></th>
+                <td><input id="tableInputOne"></td>
+                <td><input id="tableInputTwo"></td>
+            </tr>
+            <tr>
+                <th><input id="tableHeadingFour"></th>
+                <td><input id="tableInputThree"></td>
+                <td><input id="tableInputFour"></td>
+            </tr>
+        </table>
+        <button onclick="calculateQ3()">Show Answers</button>
+        <div id ="resultQ3"></div>
+    </div>
+
+    <div id = "question4" class = "question" style="display:none;">
+        <img src="GetImage.png" style="width:60%; height:60%;">
+        <p>Using the above formula where</p>
+        <ul>
+            <li>p = probability of success in 1 trial</li>
+            <li>n = number of trials</li>
+            <li>q = 1 - p = probability of failure in 1 trial</li>
+            <li>r = number of successes</li>
+            <li>n - r = number of failures</li>
+        </ul>
+        <p>p: <input id="myP"></p>
+        <p>n: <input id="myN"></p>
+        <p>r: <input id="myR"></p>
+        <button onclick="calculateQ4()">Calculate</button>
+        <div id ="resultQ4"></div>
+    </div>
+
+
+    <script>
+        function showQuestion(questionID){
+            const allQs = document.querySelectorAll(".question");
+            allQs.forEach((question) => (question.style.display = 'none'))
+
+            document.getElementById(questionID).style.display = 'block'
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const Q2Button = document.getElementById("Q2Button");
+        Q2Button.addEventListener("click", function() {
+            document.getElementById("question2").style.display = "block";
+        });
+    
+        const calculateButton = document.getElementById("calculateProbability");
+        const numeratorInput = document.getElementById("numerator");
+        const denominatorInput = document.getElementById("denominator");
+        const q2Result = document.getElementById("resultq2");
+    
+        calculateButton.addEventListener("click", function() {
+            const numerator = parseFloat(numeratorInput.value);
+            const denominator = parseFloat(denominatorInput.value);
+    
+            if (isNaN(numerator) || isNaN(denominator) || denominator === 0) {
+                q2Result.innerHTML = "<p style='color: red;'>Please enter valid numbers.</p>";
+                return;
+            }
+    
+            const probability = numerator / denominator;
+            const format = document.querySelector('input[name="format"]:checked').value;
+            let output;
+    
+            if (format === "decimal") {
+                output = probability.toFixed(4);
+            } else {
+                output = (probability * 100).toFixed(2) + "%";
+            }
+    
+            q2Result.innerHTML = `<h2 style="background-color: white; padding: 10px; border-radius: 10px; text-align: center;">The probability is: ${output}</h2>`;
+        });
+    });
+    </script>
+
+	<script>
+        function calculateQ3(){
+            //4 strings and 4 values.
+            //2 sets of strings
+            document.getElementById("resultQ3").innerHTML = "";
+
+            let set1name1 = document.getElementById("tableHeadingOne").value;
+            let set1name2 = document.getElementById("tableHeadingTwo").value;
+            let set2name1 = document.getElementById("tableHeadingThree").value;
+            let set2name2 = document.getElementById("tableHeadingFour").value;
+
+            let value1 = parseFloat(document.getElementById("tableInputOne").value);
+            let value2 = parseFloat(document.getElementById("tableInputTwo").value);
+            let value3 = parseFloat(document.getElementById("tableInputThree").value);
+            let value4 = parseFloat(document.getElementById("tableInputFour").value);
+
+            
+
+            let total = value1 + value2 + value3 + value4;
+
+            //set1name1 = value1 + value3
+            //set1name2 = value2 + value4
+            //set2name1 = value1 + value2
+            //set2name2 = value3 + value4
+
+            //need to show each one, then each duo, then each without
+            document.getElementById("resultQ3").innerHTML += "<p>Just " + set1name1 + ": " + Number((value1 + value3)/total).toFixed(4) + "</p>";
+            document.getElementById("resultQ3").innerHTML += "<p>Just " + set1name2 + ": " + Number((value2 + value4)/total).toFixed(4) + "</p>";
+            document.getElementById("resultQ3").innerHTML += "<p>Just " + set2name1 + ": " + Number((value1 + value2)/total).toFixed(4) + "</p>";
+            document.getElementById("resultQ3").innerHTML += "<p>Just " + set2name2 + ": " + Number((value3 + value4)/total).toFixed(4) + "</p>";
+
+            document.getElementById("resultQ3").innerHTML += "<p>" + set1name1 + " and " + set2name1 + ": " + Number((value1)/total).toFixed(4) + "</p>";
+            document.getElementById("resultQ3").innerHTML += "<p>" + set1name1 + " and " + set2name2 + ": " + Number((value3)/total).toFixed(4) + "</p>";
+            document.getElementById("resultQ3").innerHTML += "<p>" + set1name2 + " and " + set2name1 + ": " + Number((value2)/total).toFixed(4) + "</p>";
+            document.getElementById("resultQ3").innerHTML += "<p>" + set1name2 + " and " + set2name1 + ": " + Number((value4)/total).toFixed(4) + "</p>";
+
+        }
+
+        function calculateQ4(){
+            let myP = parseFloat(document.getElementById("myP").value);
+            let myN = parseFloat(document.getElementById("myN").value);
+            let myR = parseFloat(document.getElementById("myR").value);
+
+            if (isNaN(myP) || isNaN(myN) || isNaN(myR) || myP < 0 || myP > 1) {
+                throw new Error("Invalid input values. Ensure probabilities are between 0 and 1, and n/r are non-negative integers.");
+            }
+
+
+            let chosen = xChooseY(myN,myR);
+
+            chosen = chosen * (myP**myR) * ((1 - myP)**(myN - myR));
+
+            document.getElementById("resultQ4").innerHTML = "<p>The answer is " + chosen + " or " + Number(chosen * 100) + "%";
+        }
+
+        function xChooseY(x, y) {
+            if (y > x || y < 0) {
+                return 0; // "x choose y" is undefined for invalid values.
+            }
+
+            function factorial(n) {
+                let result = 1;
+                for (let i = 1; i <= n; i++) {
+                    result *= i;
+                }
+                return result;
+            }
+
+            return factorial(x) / (factorial(y) * factorial(x - y));
+        }
+
+    </script>
+
+</body>
+</html>
